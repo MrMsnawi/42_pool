@@ -70,7 +70,7 @@ void *ft_print_memory(void *addr, unsigned int size)
     return addr;
 }
 
-#include <stdio.h>
+/*#include <stdio.h>
 
 int main()
 {
@@ -87,4 +87,4 @@ int main()
     ft_print_memory(str4, 16);
     ft_print_memory(str5, 16);
     ft_print_memory(str6, 12);
-}
+}*/
