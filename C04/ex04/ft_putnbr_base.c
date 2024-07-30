@@ -29,20 +29,39 @@ int check_validity(char *str)
     return 1;
 }
 
-void convert_base(int nbr, char *base)
+int len(char *str)
 {
     int i;
-    char c;
 
     i = 0;
-    while (base[i])
+    while (str[i])
         i++;
+    return i;
+}
+
+void convert_base(long nbr, char *base)
+{
+    long i;
+    int j;
+    char c;
+    char d[len(base)];
+
+    j = 0;
+    i = len(base);
+    if (nbr < 0)
+    {
+        write(1, "-", 1);
+        nbr *= -1;
+    }
     while (nbr > 0)
     {
         c = base[nbr % i];
-        write(1, &c, 1);
+        d[j++] = c;
         nbr /= i;
     }
+    j--;
+    while (j >= 0)
+        write(1, &d[j--], 1);
 }
 
 void ft_putnbr_base(int nbr, char *base)
@@ -53,9 +72,11 @@ void ft_putnbr_base(int nbr, char *base)
     }
 }
 
+#include <limits.h>
+
 int main()
 {
-    ft_putnbr_base(654, "01");
+    ft_putnbr_base(-2147483648, "01");
 }
 
 // handle negative numbers
