@@ -1,5 +1,12 @@
-#include <stdio.h>
+int len(char *str)
+{
+	int i;
 
+	i = 0;
+	while (str[i])
+		i++;
+	return i;
+}
 int check_validity(char *str)
 {
 	int i;
@@ -10,9 +17,7 @@ int check_validity(char *str)
 		return 0;
 	while (str[i])
 	{
-		if (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
-			return 0;
-		if (str[i] == '-' || str[i] == '+')
+		if (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 			return 0;
 		i++;
 	}
@@ -31,83 +36,36 @@ int check_validity(char *str)
 	return 1;
 }
 
-int len(char *str)
+int ft_convert_base(char *str, char *base)
 {
 	int i;
+	int res;
+	int base_len;
 
 	i = 0;
-	while (str[i])
-		i++;
-	return i;
-}
-
-char *convert_base(char *str, char *base)
-{
-	int i;
-	int j;
-	int num;
-	int lb;
-	int narr[100];
-	char arr[100];
-
-	i = 0;
-	num = 0;
-	lb = len(base);
+	res = 0;
+	base_len = len(base);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		num = num * 10 + (str[i] - 48);
+		res = res * base_len + (str[i] - '0');
 		i++;
 	}
-	i = 0;
-	j = num;
-	while (num > 0)
-	{
-		narr[i] = num % lb;
-		num /= lb;
-		i++;
-	}
-	i = 0;
-	while (j > 0)
-	{
-		arr[i] = base[narr[i] + '0'];
-		i++;
-		j--;
-	}
-	str = arr;
-	return str;
-}
-
-int convert_to_int(char *str)
-{
-	int i;
-	int num;
-
-	i = len(str) - 1;
-	num = 0;
-	while (i >= 0)
-	{
-		num = num * 10 + (str[i] + 48);
-		i--;
-	}
-	return num;
+	return res;
 }
 
 int ft_atoi_base(char *str, char *base)
 {
 	int i;
 	int sign;
-	int res;
-	char *arr;
+	int result;
 
 	i = 0;
 	sign = 1;
 	if (check_validity(base) == 1)
 	{
-		while (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
+		while (str[i] && (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)))
 		{
 			i++;
-			if (str[i] == '\0')
-				break;
 		}
 		if (str[i] == '-' || str[i] == '+')
 		{
@@ -115,16 +73,14 @@ int ft_atoi_base(char *str, char *base)
 				sign *= -1;
 			i++;
 		}
-		i--;
-		arr = convert_base((str + i), base);
-		res = convert_to_int(arr);
+		result = ft_convert_base((str + i), base);
 	}
-	return (sign * res);
+	return (sign * result);
 }
 
 #include <stdio.h>
 
 int main()
 {
-	printf("%d\n", ft_atoi_base("  -1354dsd", "01"));
+	printf("%d\n", ft_atoi_base("  -654dsd", "0123456"));
 }
